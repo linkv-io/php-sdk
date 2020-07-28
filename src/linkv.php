@@ -3,11 +3,14 @@
 
 namespace LinkV;
 
-
 use \Exception;
 use LinkV\config\config;
 use LinkV\im\im;
 use LinkV\rtc\rtc;
+
+if (!extension_loaded("FFI")) {
+    die("FFI extension required\n");
+}
 
 class LinkV
 {

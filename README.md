@@ -6,6 +6,11 @@
 
 LINKV SDK for the php programming language.
 
+## Requirement
+PHP 7.4+
+
+PHP Extension FFI ([libffi-dev](http://sourceware.org/libffi/))
+
 ## Installing
 
 ```sh
@@ -54,7 +59,15 @@ function example() {
 ...
 
 ```
-
+## docker
+```dockerfile
+RUN set -eux;apt-get update; \
+    apt-get install -y libffi-dev; \
+    docker-php-ext-configure ffi --with-ffi; \
+    docker-php-ext-install ffi; \
+    cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini; \
+    sed -i "s/;ffi.enable=preload/ffi.enable=true/g" /usr/local/etc/php/php.ini
+```
 ## License
 
 This SDK is distributed under the

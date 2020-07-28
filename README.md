@@ -9,16 +9,20 @@ LINKV SDK for the php programming language.
 ## Installing
 
 ```sh
+# composer.json
 
 "repositories": {
+    ...
     "linkv/php-sdk": {
         "type": "vcs",
         "url": "git@github.com:linkv-io/php-sdk.git"
     }
-}
-
+    ...
+},
 "require": {
-    "linkv/php-sdk": "master"
+    ...
+    "linkv/php-sdk": "dev-master"
+    ...
 }
 
 ```

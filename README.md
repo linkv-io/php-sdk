@@ -27,6 +27,10 @@ LINKV SDK for the php programming language.
 
 ```
 
+```sh
+composer update
+```
+
 ## Usage
 
 ```php

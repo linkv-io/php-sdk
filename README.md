@@ -21,7 +21,10 @@ make
 make install
 ```
 
-- download [linkv.so](https://github.com/linkv-io/php-sdk/tags)
+- download [linkv.so](https://github.com/linkv-io/php-sdk/tags) 
+    - PHP 7.4+ (2.2.0)
+    - PHP 7.0~7.3 (2.1.4)
+    - PHP 5.* (1.7.1)
   
 - edit php.ini
 ```sh

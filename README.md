@@ -21,6 +21,8 @@ make
 make install
 ```
 
+- download [linkv.so](https://github.com/linkv-io/php-sdk/tags)
+  
 - edit php.ini
 ```sh
 # php.ini

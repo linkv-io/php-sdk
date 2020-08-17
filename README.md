@@ -7,66 +7,76 @@
 LINKV SDK for the php programming language.
 
 ## Requirement
-PHP 7.4+
-
-PHP Extension FFI ([libffi-dev](http://sourceware.org/libffi/))
+PHP-CPP
 
 ## Installing
-
+- install PHP-CPP
+    - 2.2.0 (PHP 7.4+) https://github.com/CopernicaMarketingSoftware/PHP-CPP
+    - 2.1.4 (PHP 7.0~7.3) https://github.com/CopernicaMarketingSoftware/PHP-CPP
+    - 1.7.1 (PHP 5.*) https://github.com/CopernicaMarketingSoftware/PHP-CPP-LEGACY
 ```sh
-# composer.json
-
-"repositories": {
-    ...
-    "linkv/php-sdk": {
-        "type": "vcs",
-        "url": "git@github.com:linkv-io/php-sdk.git"
-    }
-    ...
-},
-"require": {
-    ...
-    "linkv/php-sdk": "dev-master"
-    ...
-}
-
+tar zxf PHP-CPP.tar.gz
+cd PHP-CPP
+make
+make install
 ```
 
+- edit php.ini
 ```sh
-composer update
+# php.ini
+[linkv]
+extension=/path/linkv.so
 ```
 
 ## Usage
 
 ```php
+<?php
 
-use LinkV\LinkV;
-
-...
-
-function example() {
-    try {
-        $appID = 'qOPBZYGqnqgCSJCobhLFRtvvJzeLLzDR';
-        $appSecret = '1EE940FB2E0AB99368DDEF4A7446A17E3418CE9B1721464624A504BBD977A4FC1477F6A1A02B22AF64070A49C32E05B1AC23E47D86BF6C490D637A42735E6DF7589D5644B3DF1BCD489186940ADE4C3D61C6028FCAF90D57FDCA7BA1888DD4B060B2996BCF41087A8CDEE52D775548166FC92B83D88125434597B9394AC3F7C81C9B8A41C0191B0A09AD59F20881A087574C51B0288A1867D8B7EE9CABC97C322F6469E4E19261C7A26527CD65299A564B319F42DB70E016537A5AFAAE896BEE';
-        $c = new LinkV();
-        $c->init($appID, $appSecret);
-        var_dump($c->getIM()->config,$c->getRTC()->config);
-    } catch (\Exception $e) {
-        echo $e->getMessage();
-    }
+$appID = "rbaiHjNHQyVprPCBSHevvVvuNynNeTvp";
+$appSecret = "87EA975D424238D0A08F772321169816DD016667D5BB577EBAEB820516698416E4F94C28CB55E9FD8E010260E6C8A177C0B078FC098BCF2E9E7D4A9A71BF1EF8FBE49E05E5FC5A6A35C6550592C1DB96DF83F758EAFBC5B342D5D04C9D92B1A82A76E3756E83A4466DA22635A8A9F88901631B5BBBABC8A94577D66E8B000F4B179DA99BAA5E674E4F793D9E60EEF1C3B757006459ABB5E6315E370461EBC8E6B0A7523CA0032D33B5C0CF83264C9D83517C1C94CAB3F48B8D5062F5569D9793982455277C16F183DAE7B6C271F930A160A6CF07139712A9D3ABF85E05F8721B8BB6CAC1C23980227A1D5F31D23FA6567578AEEB6B124AF8FF76040F9598DDC9DE0DA44EF34BBB01B53E2B4713D2D701A9F913BE56F9F5B9B7D8D2006CA910D8BFA0C34C619AB0EEBDAA474E67115532511686992E88C4E32E86D82736B2FE141E9037381757ED02C7D82CA8FC9245700040D7E1E200029416295D891D388D69AC5197A65121B60D42040393FB42BC2769B1E2F649A7A17083F6AB2B1BE6E993";
+if (!LvInit($appID,$appSecret)) {
+    return;
 }
 
-...
+// $im = new LvIM();
+// var_dump($im);
+// $rtc = new LvRTC();
+// var_dump($rtc);
 
-```
-## docker
-```dockerfile
-RUN set -eux;apt-get update; \
-    apt-get install -y libffi-dev; \
-    docker-php-ext-configure ffi --with-ffi; \
-    docker-php-ext-install ffi; \
-    cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini; \
-    sed -i "s/;ffi.enable=preload/ffi.enable=true/g" /usr/local/etc/php/php.ini
+$live = new LvLIVE();
+$third_uid="test-php-tob";
+$a_id = "test";
+$arr = $live->GetTokenByThirdUID($third_uid,$a_id,'test-php','http://meet.linkv.sg/app/rank-list/static/img/defaultavatar.cd935fdb.png',LvLIVE::SexTypeUnknown);
+var_dump($arr['live_token']);
+
+
+$liveOpenID = $arr['live_open_id'];
+$gold0 = $live->GetGoldByLiveOpenID($liveOpenID);
+var_dump("gold0:".$gold0);
+$orderID = '';
+$gold = 10;
+$gold1 = $live->SuccessOrderByLiveOpenID($liveOpenID, LvLIVE::OrderTypeAdd, $gold, 10, 1, LvLIVE::PlatformTypeH5,$orderID);
+var_dump("gold1:".$gold1);
+
+if (($gold0+$gold) != $gold1) {
+    var_dump("(golds0+gold) != golds1");
+    return;
+}
+
+$ok = $live->ChangeGoldByLiveOpenID($liveOpenID, LvLIVE::OrderTypeDel, $gold, 1, 'test del');
+if (!$ok) {
+    var_dump("ok: ".$ok);
+    return;
+}
+$gold2 = $live->GetGoldByLiveOpenID($liveOpenID);
+var_dump("gold2:".$gold2);
+
+if($gold0 != $gold2) {
+    var_dump("golds0 != golds2");
+    return;
+}
+var_dump("success");
 ```
 ## License
 

@@ -7,7 +7,9 @@
 LINKV SDK for the php programming language.
 
 ## Requirement
-PHP-CPP
+PHP
+
+PHP-CPP 
 
 ## Installing
 - install PHP-CPP
